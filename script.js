@@ -2,7 +2,9 @@
 document.addEventListener("keydown", (event) => {
   const pokemonNameInput = document.getElementById("pokemonName");
 
+  // Prevent default behavior if Enter is pressed
   if (event.key === "Enter" && document.activeElement === pokemonNameInput) {
+    event.preventDefault(); // Prevent form submission or other default actions
     fetchData(); // Call the fetchData function
   }
 });
@@ -113,7 +115,8 @@ async function fetchData() {
 
 const fetchData_2 = document.getElementById("fetchData_2");
 
-fetchData_2.addEventListener("click", () => {
+fetchData_2.addEventListener("click", (event) => {
+  event.preventDefault(); // Prevent default behavior for the button
   const popAudio = new Audio("./sounds/pop.mp3");
   popAudio.play();
 });
