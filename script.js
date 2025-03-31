@@ -23,6 +23,8 @@ async function fetchData() {
     const uncomfortableAwkward = document.getElementById(
       "uncomfortableAwkward"
     );
+    const pokemonNameDisplay = document.getElementById("pokemonNameDisplay");
+    const pokemonTypeDisplay = document.getElementById("pokemonTypeDisplay");
 
     if (!response.ok) {
       // Hide the image
@@ -34,6 +36,10 @@ async function fetchData() {
       whoisThat.innerHTML = "<h2>Who is that 🙄?</h2>";
       uncomfortableAwkward.style.display = "block";
 
+      // Hide Pokémon name and type
+      pokemonNameDisplay.style.display = "none";
+      pokemonTypeDisplay.style.display = "none";
+
       // Play the "Among Us" sound
       const amongUsAudio = new Audio("./sounds/among-us-sound.mp3");
       amongUsAudio.play();
@@ -43,19 +49,36 @@ async function fetchData() {
 
     const data = await response.json();
     const pokemonSprite = data.sprites.front_default;
+    const pokemonNameFetched = data.name; // Get the name from the API response
+    const pokemonTypes = data.types.map((typeInfo) => typeInfo.type.name); // Extract types
 
-    if (pokemonSprite) {
+    if (pokemonSprite && pokemonNameFetched) {
       // Show the Pokémon sprite
       imgElement.src = pokemonSprite;
       imgElement.style.display = "block";
-      uncomfortableAwkward.style.display = "none";
+
+      // Display the Pokémon name
+      pokemonNameDisplay.innerHTML = `<h3>${pokemonNameFetched.toUpperCase()}</h3>`;
+      pokemonNameDisplay.style.display = "block";
+
+      // Display the Pokémon types
+      pokemonTypeDisplay.innerHTML = `<p>Type: ${pokemonTypes
+        .join(", ")
+        .toUpperCase()}</p>`;
+      pokemonTypeDisplay.style.display = "block";
+
       // Hide the error message
       whoisThat.style.display = "none";
+      uncomfortableAwkward.style.display = "none";
       whoisThat.textContent = "";
     } else {
       // Hide the image
       imgElement.style.display = "none";
-      uncomfortableAwkward.style.display = "none";
+
+      // Hide Pokémon name and type
+      pokemonNameDisplay.style.display = "none";
+      pokemonTypeDisplay.style.display = "none";
+
       // Show the error message
       whoisThat.style.display = "block";
       whoisThat.textContent = "Who is that 🙄";
@@ -67,9 +90,17 @@ async function fetchData() {
   } catch (error) {
     const imgElement = document.getElementById("pokemonSprite");
     const whoisThat = document.getElementById("whoisThat");
+    const pokemonNameDisplay = document.getElementById("pokemonNameDisplay");
+    const pokemonTypeDisplay = document.getElementById("pokemonTypeDisplay");
 
-    // Hide the image and show the error message
+    // Hide the image
     imgElement.style.display = "none";
+
+    // Hide Pokémon name and type
+    pokemonNameDisplay.style.display = "none";
+    pokemonTypeDisplay.style.display = "none";
+
+    // Show the error message
     whoisThat.style.display = "block";
 
     // Play the "Among Us" sound
